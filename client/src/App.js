@@ -1,22 +1,45 @@
 import React from "react";
-import ReactQuill from "react-quill"; // ES6
+import ReactQuill, { Quill } from "react-quill";
+
+// QuillJS Modules
+import { ImageDrop } from "quill-image-drop-module";
+import MagicUrl from "quill-magic-url";
+import BlotFormatter from "quill-blot-formatter";
 
 import Connection from "./Connection";
 
-import "react-quill/dist/quill.snow.css"; // ES6
+import "react-quill/dist/quill.snow.css";
 
 const Editor = () => {
+  Quill.register("modules/imageDrop", ImageDrop);
+  Quill.register("modules/magicUrl", MagicUrl);
+  Quill.register("modules/blotFormatter", BlotFormatter);
+
   const [data, setDelta] = React.useState({});
   const connection = Connection.get("examples", "richtext");
 
+  const modules = {
+    imageDrop: true,
+    magicUrl: true,
+    blotFormatter: {},
+    toolbar: [
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+      ["bold", "italic", "underline", "strike"],
+      [{ color: [] }, { background: [] }],
+      ["blockquote", "code-block"],
+      [{ align: [] }],
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ script: "sub" }, { script: "super" }],
+      [{ indent: "-1" }, { indent: "+1" }],
+      ["link", "image", "clean"]
+    ]
+  };
+
   const handleChange = (delta, oldDelta, source) => {
-    console.log("Source:", source);
     if (source !== "user") {
       return;
     }
     connection.submitOp(delta);
-    console.log("Delta:", data);
-    console.log("oldDelta:", oldDelta);
   };
 
   React.useEffect(() => {
@@ -39,7 +62,7 @@ const Editor = () => {
 
   return (
     <div>
-      <ReactQuill value={data} onChange={handleChange} />
+      <ReactQuill value={data} onChange={handleChange} modules={modules} />
     </div>
   );
 };
