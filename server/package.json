@@ -19,7 +19,7 @@
     "reconnecting-websocket": "^4.2.0",
     "rich-text": "^4.0.0",
     "sharedb": "^1.0.0-beta",
-    "ws": "^7.2.0"
+    "ws": "^7.4.6"
   },
   "devDependencies": {
     "browserify": "^16.5.0"
